@@ -95,7 +95,7 @@ class HitCountMixin(object):
 
         # if not authenticated, see if we have a repeat session
         else:
-            if not qs.filter(session=session_key, hitcount=hitcount):
+            if not qs.filter(hitcount=hitcount, ip=get_ip(request), user_agent=request.META.get('HTTP_USER_AGENT', '')[:255]):
                 hit.save()
                 response = UpdateHitCountResponse(
                     True, 'Hit counted: session key')
